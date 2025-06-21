@@ -78,7 +78,7 @@ if st.button("Проанализировать с помощью ИИ"):
         with st.spinner("Обращение к ИИ..."):
             try:
                 response = client.chat.completions.create(
-    model="gpt-4",
+    model="gpt-4.1",
     messages=[
         {"role": "system", "content": "Ты эксперт по оценке команд и проектного успеха."},
         {"role": "user", "content": prompt}
