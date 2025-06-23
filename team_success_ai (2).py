@@ -86,7 +86,7 @@ if st.button("Проанализировать с помощью ИИ"):
                         {"role": "user", "content": prompt}
                     ]
                 }
-                response = requests.post("https://api.proxyapi.ru/v1/chat/completions", json=payload, headers=headers)
+                response = requests.post("https://proxyapi.ru/openai/v1/chat/completions", json=payload, headers=headers)
                 response.raise_for_status()
                 result = response.json()["choices"][0]["message"]["content"]
                 st.markdown("### 🧠 Ответ ИИ:")
