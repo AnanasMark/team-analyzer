@@ -1,5 +1,5 @@
 import streamlit as st
-import requests
+from openai import OpenAI
 
 st.title("Прогноз успеха команды с помощью ИИ")
 st.subheader("Добавьте участников, ожидания и внешние события")
