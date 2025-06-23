@@ -75,20 +75,19 @@ if st.button("Проанализировать с помощью ИИ"):
 
         with st.spinner("Обращение к ProxyAPI..."):
             try:
-                headers = {
-                    "Authorization": f"Bearer {api_key}",
-                    "Content-Type": "application/json"
-                }
-                payload = {
-                    "model": "gpt-4.1-mini",
-                    "messages": [
+                client = OpenAI(
+                    api_key=api_key,
+                    base_url="https://api.proxyapi.ru/openai/v1"
+                )
+
+                response = client.chat.completions.create(
+                    model="gpt-4.1-mini",
+                    messages=[
                         {"role": "system", "content": "Ты эксперт по оценке команд и проектного успеха."},
                         {"role": "user", "content": prompt}
                     ]
-                }
-                response = requests.post("https://proxyapi.ru/openai/v1/chat/completions", json=payload, headers=headers)
-                response.raise_for_status()
-                result = response.json()["choices"][0]["message"]["content"]
+                )
+                result = response.choices[0].message.content
                 st.markdown("### 🧠 Ответ ИИ:")
                 st.markdown(result)
             except Exception as e:
