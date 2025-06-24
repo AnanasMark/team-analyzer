@@ -78,7 +78,7 @@ with st.expander("👥 Участники команды"):
             role = st.selectbox("Роль", roles, key=f"role_{i}")
         with cols[1]:
             skill = st.selectbox("Навык", skill_levels, key=f"skill_{i}")
-                with cols[2]:
+        with cols[2]:
             motivation = st.selectbox("Мотивация", motivations, key=f"motivation_{i}")
         team.append({"role": role, "skill": skill, "motivation": motivation})
 
