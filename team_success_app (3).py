@@ -69,7 +69,7 @@ with st.expander("👥 Участники команды"):
         "QA", "UX/UI Designer", "DevOps / Infrastructure"
     ]
     skill_levels = ["junior", "middle", "senior", "неадекватен"]
-        motivations = ["высокая", "средняя", "низкая"]
+    motivations = ["высокая", "средняя", "низкая"]
 
     for i in range(int(num_members)):
     st.markdown(f"**Участник {i+1}**")
