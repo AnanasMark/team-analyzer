@@ -139,12 +139,9 @@ if st.button("Проанализировать с помощью ИИ"):
                 )
                 result = response.choices[0].message.content
 
-                st.markdown("### 🧠 Ответ ИИ:")
+                st.markdown("### Результат анализа")
 
-                if "|" in result and result.count("|") > 5:
-    st.markdown(result)
-else:
-    st.markdown(result)
+                st.markdown(result)
                 else:
                     st.markdown(result)
 
