@@ -89,39 +89,49 @@ if st.button("Проанализировать с помощью ИИ"):
             prompt += f"\n{i}. Роль: {member['role']}, Навык: {member['skill']}, Поведение: {member['behavior']}, Мотивация: {member['motivation']}"
 
         with st.spinner("Обращение к ProxyAPI..."):
-    try:
-        client = OpenAI(
-            api_key=api_key,
-            base_url="https://api.proxyapi.ru/openai/v1"
-        )
+            try:
+                headers = {
+                    "Authorization": f"Bearer {api_key}",
+                    "Content-Type": "application/json"
+                }
+                payload = {
+                    "model": "gpt-4.1-mini",
+                    "messages": [
+                        {"role": "system", "content": "Ты эксперт по оценке команд и проектного успеха."},
+                        {"role": "user", "content": prompt}
+                    ]
+                }
+                client = OpenAI(
+    api_key=api_key,
+    base_url="https://api.proxyapi.ru/openai/v1"
+)
 
-        response = client.chat.completions.create(
-            model="gpt-4.1-mini",
-            messages=[
-                {"role": "system", "content": "Ты эксперт по оценке команд и проектного успеха."},
-                {"role": "user", "content": prompt}
-            ]
-        )
-        result = response.choices[0].message.content
+response = client.chat.completions.create(
+    model="gpt-4.1-mini",
+    messages=[
+        {"role": "system", "content": "Ты эксперт по оценке команд и проектного успеха."},
+        {"role": "user", "content": prompt}
+    ]
+)
+result = response.choices[0].message.content
+                                st.markdown("### 🧠 Ответ ИИ:")
 
-        st.markdown("### 🧠 Ответ ИИ:")
+                if "|" in result and result.count("|") > 5:
+                    lines = result.splitlines()
+                    table_lines = [line for line in lines if "|" in line and line.strip() and not line.strip().startswith("|")]
+                    if len(table_lines) > 1:
+                        headers = [h.strip() for h in table_lines[0].strip("|").split("|")]
+                        data_rows = [
+                            [cell.strip() for cell in row.strip("|").split("|")]
+                            for row in table_lines[1:]
+                        ]
+                        df = pd.DataFrame(data_rows, columns=headers)
+                        st.table(df)
+                        st.markdown("\n".join(lines))
+                    else:
+                        st.markdown(result)
+                else:
+                    st.markdown(result)
 
-        if "|" in result and result.count("|") > 5:
-            lines = result.splitlines()
-            table_lines = [line for line in lines if "|" in line and line.strip() and not line.strip().startswith("|")]
-            if len(table_lines) > 1:
-                headers = [h.strip() for h in table_lines[0].strip("|").split("|")]
-                data_rows = [
-                    [cell.strip() for cell in row.strip("|").split("|")]
-                    for row in table_lines[1:]
-                ]
-                df = pd.DataFrame(data_rows, columns=headers)
-                st.table(df)
-                st.markdown("\n".join(lines))
-            else:
-                st.markdown(result)
-        else:
-            st.markdown(result)
-
-    except Exception as e:
-        st.error(f"Ошибка при обращении к ProxyAPI: {e}")
+            except Exception as e:
+                st.error(f"Ошибка при обращении к ProxyAPI: {e}")
