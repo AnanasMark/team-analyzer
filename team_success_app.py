@@ -117,8 +117,7 @@ if st.button("Проанализировать с помощью ИИ"):
                         ]
                         df = pd.DataFrame(data_rows, columns=headers)
                         st.table(df)
-                        st.markdown("
-".join(lines))
+                        st.markdown("".join(lines))
                     else:
                         st.markdown(result)
                 else:
