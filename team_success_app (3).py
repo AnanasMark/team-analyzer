@@ -72,7 +72,7 @@ with st.expander("👥 Участники команды"):
     motivations = ["высокая", "средняя", "низкая"]
 
     for i in range(int(num_members)):
-    st.markdown(f"**Участник {i+1}**")
+         st.markdown(f"**Участник {i+1}**")
     cols = st.columns(3)
     with cols[0]:
         role = st.selectbox("Роль", roles, key=f"role_{i}")
