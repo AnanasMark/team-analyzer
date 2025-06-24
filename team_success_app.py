@@ -86,8 +86,7 @@ if st.button("Проанализировать с помощью ИИ"):
 Состав команды:
         """
         for i, member in enumerate(team, 1):
-            prompt += f"
-{i}. Роль: {member['role']}, Навык: {member['skill']}, Поведение: {member['behavior']}, Мотивация: {member['motivation']}"
+            prompt += f"{i}. Роль: {member['role']}, Навык: {member['skill']}, Поведение: {member['behavior']}, Мотивация: {member['motivation']}"
 
         with st.spinner("Обращение к ProxyAPI..."):
             try:
