@@ -11,20 +11,15 @@ api_key = st.session_state.get("api_key", "")
 
 team = []
 
-with st.expander("📦 Описание проекта"):
+with st.expander("Описание проекта"):
     description = st.text_area("Что вы реализуете?", help="Кратко опишите суть проекта — цель, аудиторию, основную задачу", max_chars=500)
     expectation = st.selectbox("Какой результат ожидается?", ["Фича", "MVP", "Концепт", "Готовый продукт"], help="Уровень полноты создаваемого результата: от простой функции до полноценного продукта")
     deadline = st.selectbox("Срок реализации", ["1 месяц", "3 месяца", "6 месяцев", "1 год"], help="Сколько времени планируется на реализацию проекта")
 
-with st.expander("🏗️ Условия реализации проекта"):
-    st.markdown("### 📍 Этап проекта")
-    project_stage = st.selectbox("Текущий этап проекта", ["Инициация", "Планирование", "Реализация", "Проверка"], help="На каком этапе сейчас находится проект")
-
-    st.markdown("### 🧱 Методология и управление")
+with st.expander("Условия реализации проекта"):
+    project_stage = st.selectbox("Текущий этап проекта", ["Инициация", "Планирование", "Реализация", "Проверка"], help="На каком этапе сейчас находится проект")  
     methodology = st.selectbox("Какой подход используется?", ["Scrum", "Kanban", "Waterfall", "Нет явного подхода"], help="Какая методология используется для управления")
     has_pm = st.selectbox("Есть ли Project Manager или Scrum Master?", ["Да", "Нет"], help="Назначен ли кто-то ответственный за управление проектом")
-
-    st.markdown("### 📂 Проектные артефакты")
     project_assets = st.multiselect("Что уже есть в проекте?", [
         "Фиксированный список фич (MVP backlog)",
         "План релиза / roadmap",
@@ -72,15 +67,15 @@ with st.expander("👥 Участники команды"):
     motivations = ["высокая", "средняя", "низкая"]
 
     for i in range(int(num_members)):
-         st.markdown(f"**Участник {i+1}**")
-    cols = st.columns(3)
-    with cols[0]:
-        role = st.selectbox("Роль", roles, key=f"role_{i}")
-    with cols[1]:
-        skill = st.selectbox("Навык", skill_levels, key=f"skill_{i}")
-    with cols[2]:
-        motivation = st.selectbox("Мотивация", motivations, key=f"motivation_{i}")
-    team.append({"role": role, "skill": skill, "motivation": motivation})
+        st.markdown(f"**Участник {i+1}**")
+        cols = st.columns(3)
+        with cols[0]:
+            role = st.selectbox("Роль", roles, key=f"role_{i}")
+        with cols[1]:
+            skill = st.selectbox("Навык", skill_levels, key=f"skill_{i}")
+        with cols[2]:
+            motivation = st.selectbox("Мотивация", motivations, key=f"motivation_{i}")
+        team.append({"role": role, "skill": skill, "motivation": motivation})
 
 if st.button("Проанализировать с помощью ИИ"):
     if not api_key:
@@ -118,35 +113,7 @@ if st.button("Проанализировать с помощью ИИ"):
 Есть PM: {has_pm}
 Проектные артефакты: {', '.join(project_assets)}
 
-Состав команды:
-        """
-        for i, member in enumerate(team, 1):
-            prompt += f"\n{i}. Роль: {member['role']}, Навык: {member['skill']}, Мотивация: {member['motivation']}"
 
-        with st.spinner("Обращение к ProxyAPI..."):
-            try:
-                client = OpenAI(
-                    api_key=api_key,
-                    base_url="https://api.proxyapi.ru/openai/v1"
-                )
-
-                response = client.chat.completions.create(
-                    model="gpt-4.1-mini",
-                    messages=[
-                        {"role": "system", "content": "Ты эксперт по оценке команд и проектного успеха."},
-                        {"role": "user", "content": prompt}
-                    ]
-                )
-                result = response.choices[0].message.content
-
-                st.markdown("### Результат анализа")
-
-                st.markdown(result)
-                else:
-                    st.markdown(result)
-
-            except Exception as e:
-                st.error(f"Ошибка при обращении к ProxyAPI: {e}")
 
 Ответ строго оформи по шаблону ниже. Не изменяй структуру, порядок блоков или формат заголовков:
 
@@ -177,4 +144,31 @@ if st.button("Проанализировать с помощью ИИ"):
 ---
 
 ## **Общий вывод**
-[Итоговый вывод + readiness-грейд (низкий / средний / высокий)]
+[Итоговый вывод]
+
+"""
+        for i, member in enumerate(team, 1):
+            prompt += f"\n{i}. Роль: {member['role']}, Навык: {member['skill']}, Мотивация: {member['motivation']}"
+
+        with st.spinner("Обращение к ProxyAPI..."):
+            try:
+                client = OpenAI(
+                    api_key=api_key,
+                    base_url="https://api.proxyapi.ru/openai/v1"
+                )
+
+                response = client.chat.completions.create(
+                    model="gpt-4.1-mini",
+                    messages=[
+                        {"role": "system", "content": "Ты эксперт по оценке команд и проектного успеха."},
+                        {"role": "user", "content": prompt}
+                    ]
+                )
+                result = response.choices[0].message.content
+
+                st.markdown("### 🧠 Ответ ИИ:")
+
+                st.markdown(result)    
+
+            except Exception as e:
+                st.error(f"Ошибка при обращении к ProxyAPI: {e}")
