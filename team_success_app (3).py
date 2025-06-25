@@ -78,7 +78,7 @@ with st.expander("👥 Участники команды"):
             motivation = st.selectbox("Мотивация", motivations, key=f"motivation_{i}")
         team.append({"role": role, "skill": skill, "motivation": motivation})
 
-if st.button("Проанализировать с помощью ИИ"):
+if st.button("Получить анализ"):
     if not api_key:
         st.warning("Введите API ключ для запуска анализа.")
     else:
@@ -167,7 +167,7 @@ if st.button("Проанализировать с помощью ИИ"):
                 )
                 result = response.choices[0].message.content
 
-                st.markdown("### 🧠 Ответ ИИ:")
+                st.markdown("### Результат")
 
                 st.markdown(result)    
 
