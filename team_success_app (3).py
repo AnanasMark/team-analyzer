@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from openai import OpenAI
 
-st.title("🧠 Прогноз успеха команды")
+st.title("Прогноз успеха команды")
 
 from dotenv import load_dotenv
 import os
