@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-api_key = os.getenv("OPENAI_API_KEY")
+api_key = "sk-JfknY7yZatWntVhsP9zHH81dUenA01S6"
 
 team = []
 
