@@ -4,10 +4,11 @@ from openai import OpenAI
 
 st.title("🧠 Прогноз успеха команды")
 
-api_key = st.text_input("🔑 Введите ProxyAPI ключ", type="password", key="api_key_input")
-if api_key:
-    st.session_state["api_key"] = api_key
-api_key = st.session_state.get("api_key", "")
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+api_key = os.getenv("OPENAI_API_KEY")
 
 team = []
 
